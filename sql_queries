@@ -1,0 +1,102 @@
+select temp from sfc2019 where refid = 'sa_kykm' and date =
+'201905131200000';
+select spd from sfc2019 where refid = 'sa_kttd' and date = '201905281200000';
+
+(select 'ensgefs01d3_2019', wsp10m from ensgefs01d3_2019 where refid = 'sa_ksea' and
+initdate = '20190527000000' and fhr = 24)
+UNION
+(select 'ensgefs02d3_2019', wsp10m from ensgefs02d3_2019 where refid = 'sa_ksea' and
+initdate = '20190527000000' and fhr = 24)
+UNION
+(select 'ensgefs03d3_2019', wsp10m from ensgefs03d3_2019 where refid = 'sa_ksea' and
+initdate = '20190527000000' and fhr = 24)
+UNION
+(select 'ensgefs04d3_2019', wsp10m from ensgefs04d3_2019 where refid = 'sa_ksea' and
+initdate = '20190527000000' and fhr = 24)
+UNION
+(select 'ensgefs05d3_2019', wsp10m from ensgefs05d3_2019 where refid = 'sa_ksea' and
+initdate = '20190527000000' and fhr = 24)
+UNION
+(select 'ensgefs06d3_2019', wsp10m from ensgefs06d3_2019 where refid = 'sa_ksea' and
+initdate = '20190527000000' and fhr = 24)
+UNION
+(select 'ensgefs07d3_2019', wsp10m from ensgefs07d3_2019 where refid = 'sa_ksea' and
+initdate = '20190527000000' and fhr = 24)
+UNION
+(select 'ensgefs08d3_2019', wsp10m from ensgefs08d3_2019 where refid = 'sa_ksea' and
+initdate = '20190527000000' and fhr = 24)
+UNION
+(select 'ensgefs09d3_2019', wsp10m from ensgefs09d3_2019 where refid = 'sa_ksea' and
+initdate = '20190527000000' and fhr = 24)
+UNION
+(select 'ensgefs10d3_2019', wsp10m from ensgefs10d3_2019 where refid = 'sa_ksea' and
+initdate = '20190527000000' and fhr = 24)
+UNION
+(select 'ensgfswrf4d3_2019', wsp10m from ensgfswrf4d3_2019 where refid = 'sa_ksea' and
+initdate = '20190527000000' and fhr = 24)
+UNION
+(select 'enshrrrd3_2019', wsp10m from enshrrrd3_2019 where refid = 'sa_ksea' and
+initdate = '20190527000000' and fhr = 24)
+UNION
+(select 'enscmcgd3_2019', wsp10m from enscmcgd3_2019 where refid = 'sa_ksea' and
+initdate = '20190527000000' and fhr = 24)
+UNION
+(select 'ensgaspd3_2019', wsp10m from ensgaspd3_2019 where refid = 'sa_ksea' and
+initdate = '20190527000000' and fhr = 24)
+UNION
+(select 'ensjmagd3_2019', wsp10m from ensjmagd3_2019 where refid = 'sa_ksea' and
+initdate = '20190527000000' and fhr = 24)
+UNION
+(select 'ensngpsd3_2019', wsp10m from ensngpsd3_2019 where refid = 'sa_ksea' and
+initdate = '20190527000000' and fhr = 24)
+UNION
+(select 'enstcwbd3_2019', wsp10m from enstcwbd3_2019 where refid = 'sa_ksea' and
+initdate = '20190527000000' and fhr = 24)
+UNION
+(select 'ensukmod3_2019', wsp10m from ensukmod3_2019 where refid = 'sa_ksea' and
+initdate = '20190527000000' and fhr = 24);
+
+
+
+
+(select 'ensgefs01d2_2019', pcp6 from ensgefs01d2_2019 where refid = 'sa_kykm' and
+initdate = '20190512000000' and fhr = 36)
+UNION
+(select 'ensgefs02d2_2019', pcp6 from ensgefs02d2_2019 where refid = 'sa_kykm' and
+initdate = '20190512000000' and fhr = 36)
+UNION
+(select 'ensgefs03d2_2019', pcp6 from ensgefs03d2_2019 where refid = 'sa_kykm' and
+initdate = '20190512000000' and fhr = 36)
+UNION
+(select 'ensgefs04d2_2019', pcp6 from ensgefs04d2_2019 where refid = 'sa_kykm' and
+initdate = '20190512000000' and fhr = 36)
+UNION
+(select 'ensgefs05d2_2019', pcp6 from ensgefs05d2_2019 where refid = 'sa_kykm' and
+initdate = '20190512000000' and fhr = 36)
+UNION
+(select 'ensgefs06d2_2019', pcp6 from ensgefs06d2_2019 where refid = 'sa_kykm' and
+initdate = '20190512000000' and fhr = 36)
+UNION
+(select 'ensgefs07d2_2019', pcp6 from ensgefs07d2_2019 where refid = 'sa_kykm' and
+initdate = '20190512000000' and fhr = 36)
+UNION
+(select 'ensgefs08d2_2019', pcp6 from ensgefs08d2_2019 where refid = 'sa_kykm' and
+initdate = '20190512000000' and fhr = 36)
+UNION
+(select 'ensgefs09d2_2019', pcp6 from ensgefs09d2_2019 where refid = 'sa_kykm' and
+initdate = '20190512000000' and fhr = 36)
+UNION
+(select 'ensgefs10d2_2019', pcp6 from ensgefs10d2_2019 where refid = 'sa_kykm' and
+initdate = '20190512000000' and fhr = 36);
+
+
+SELECT refid, date_format(date,'%Y%m%d%H'),temp,dew,spd,dir,pres,pcp6 FROM sfc2019 FORCE INDEX (datelatlon) WHERE date = 20190402000000 and refid in (sa_cbbc,sa_cwae,sa_cwaq,sa_cwas,sa_cwav,sa_cwbo,sa_cwct,sa_cwdj,sa_cwdk,sa_cwdu,sa_cwdz,sa_cweb,sa_cweh,sa_cwel,sa_cwez,sa_cwfg,sa_cwfj,sa_cwgb,sa_cwgm,sa_cwgp,sa_cwgt,sa_cwgw,sa_cwgy,sa_cwhc,sa_cwhi,sa_cwiw,sa_cwji,sa_cwjr,sa_cwjv,sa_cwjx,sa_cwkh,sa_cwko,sa_cwle,sa_cwlm,sa_cwlp,sa_cwly,sa_cwme,sa_cwmm,sa_cwmq,sa_cwnm,sa_cwnp,sa_cwnr,sa_cwoe,sa_cwok,sa_cwpf,sa_cwpr,sa_cwpu,sa_cwqc,sa_cwqk,sa_cwql,sa_cwqq,sa_cwrj,sa_cwrm,sa_cwrt,sa_cwru,sa_cwry,sa_cwsb,sa_cwsk,sa_cwsl,sa_cwsp,sa_cwsv,sa_cwsw,sa_cwus,sa_cwvf,sa_cwvn,sa_cwvp,sa_cwwa,sa_cwwk,sa_cwxa,sa_cwxl,sa_cwye,sa_cwyj,sa_cwyl,sa_cwyy,sa_cwza,sa_cwzg,sa_cwzo,sa_cwzv,sa_cxbk,sa_cxfa,sa_cxmw,sa_cxtl,sa_cxvg,sa_cyaz,sa_cybd,sa_cybl,sa_cybw,sa_cycd,sa_cycg,sa_cycp,sa_cydc,sa_cyge,sa_cyhe,sa_cyka,sa_cyky,sa_cylw,sa_cymj,sa_cypw,sa_cyqf,sa_cyql,sa_cyqq,sa_cyqr,sa_cyrv,sa_cyvr,sa_cywh,sa_cywl,sa_cyxc,sa_cyxh,sa_cyxx,sa_cyyc,sa_cyyf,sa_cyyj,sa_cyyn,sa_cyzt,sa_czpc,sa_k0s9,sa_k1s5,sa_kaat,sa_kacv,sa_kalw,sa_kapc,sa_kast,sa_kaun,sa_kawo,sa_kazc,sa_kbab,sa_kbce,sa_kbdg,sa_kbdn,sa_kbfi,sa_kbih,sa_kbil,sa_kbke,sa_kbli,sa_kblu,sa_kbmc,sa_kbno,sa_kboi,sa_kbok,sa_kbpi,sa_kbtm,sa_kbvs,sa_kbyg,sa_kbyi,sa_kbzn,sa_kcag,sa_kccr,sa_kcdc,sa_kcec,sa_kcez,sa_kcic,sa_kclm,sa_kcls,sa_kcny,sa_kcod,sa_kcoe,sa_kctb,sa_kcvo,sa_kdew,sa_kdij,sa_kdln,sa_kdls,sa_kdpg,sa_kdvo,sa_keat,sa_kedu,sa_keeo,sa_keko,sa_keln,sa_kely,sa_kemm,sa_kenv,sa_keph,sa_keug,sa_keul,sa_kevw,sa_kfhr,sa_kfmn,sa_kgcd,sa_kgeg,sa_kgey,sa_kgfa,sa_kggw,sa_kgjt,sa_kgpi,sa_kgrf,sa_kgtf,sa_khdn,sa_khif,sa_khio,sa_khln,sa_khqm,sa_khri,sa_khth,sa_khvr,sa_khwd,sa_kida,sa_kjac,sa_kjdn,sa_kjer,sa_kkls,sa_klgd,sa_klgu,sa_klhm,sa_klkv,sa_kllj,sa_klmt,sa_klnd,sa_klol,sa_klvk,sa_klvm,sa_klws,sa_klwt,sa_kmcc,sa_kmce,sa_kmeh,sa_kmer,sa_kmfr,sa_kmhr,sa_kmhs,sa_kmlf,sa_kmlp,sa_kmls,sa_kmmh,sa_kmmv,sa_kmod,sa_kmso,sa_kmtj,sa_kmuo,sa_kmwh,sa_kmyl,sa_kmyv,sa_knfl,sa_know,sa_knuq,sa_knuw,sa_koak,sa_kogd,sa_kolf,sa_kolm,sa_komk,sa_kono,sa_konp,sa_kors,sa_koth,sa_kove,sa_kp60,sa_kp68,sa_kp69,sa_kpae,sa_kpao,sa_kpdt,sa_kpdx,sa_kpga,sa_kpih,sa_kplu,sa_kpna,sa_kpsc,sa_kpuc,sa_kpuw,sa_kpvu,sa_kpwt,sa_krbg,sa_krbl,sa_krdd,sa_krdm,sa_kreo,sa_krhv,sa_kril,sa_kriw,sa_krks,sa_krld,sa_krno,sa_krnt,sa_krwl,sa_krxe,sa_ksac,sa_ksck,sa_ksea,sa_ksff,sa_ksfo,sa_ksgu,sa_kshn,sa_kshr,sa_ksiy,sa_ksjc,sa_kska,sa_kslc,sa_ksle,sa_ksmf,sa_ksmn,sa_ksmp,sa_ksnt,sa_kspb,sa_ksql,sa_ksts,sa_ksun,sa_ksuu,sa_ksve,sa_ksxt,sa_kszt,sa_ktcm,sa_ktex,sa_ktiw,sa_ktmk,sa_ktph,sa_ktrk,sa_kttd,sa_ktvl,sa_ktwf,sa_ku16,sa_ku42,sa_kuao,sa_kuil,sa_kuki,sa_kvcb,sa_kvel,sa_kvuo,sa_kwmc,sa_kwrl,sa_kwys,sa_kykm,uw_uw) ORDER BY refid,date
+
+SELECT refid, date_format(date,'%Y%m%d%H'),temp,dew,spd,dir,pres,pcp6 FROM sfc2019 FORCE INDEX (datelatlon) WHERE date = 20190402000000 and refid in ('sa_cwae','sa_cwaq','sa_kykm','uw_uw') ORDER BY refid,date
+
+
+
+models  = ['ensgefs01','ensgefs02','ensgefs03','ensgefs04','ensgefs05', \
+           'ensgefs06','ensgefs07','ensgefs08','ensgefs09','ensgefs10', \
+           'enscent', 'enscmcg', 'ensgasp', 'ensjmag', 'ensngps', \
+           'enstcwb', 'ensukmo']
