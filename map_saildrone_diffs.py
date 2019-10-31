@@ -15,7 +15,8 @@ py_dir      = sail_dir + '/python'
 pickle_dir  = sail_dir + '/pickle'
 data_dir    = sail_dir + '/data'
 rundirs_dir = sail_dir + '/rundirs'
-plot_dir    = '/home/disk/funnel/saildrone/images/maps_diffs'
+#plot_dir    = '/home/disk/funnel/saildrone/images/maps_diffs'
+plot_dir    = sail_dir + '/plots'
 
 saildrone_data = '/home/disk/jabba/steed/data/raw/saildrone/'
 rawins_data    = '/home/disk/spock2/jbaars/qc_rawins_data'
@@ -27,7 +28,7 @@ model_data     = '/home/disk/tcu/grids'
 models = ['gfsp25']
 domain = 'd01'
 #fhrs   = ['000', '003', '006', '009', '012', '015', '018', '021', '024']
-fhrs   = ['000', '003']
+fhrs   = ['000', '012']
 
 stns_sail = ['1054', '1055', '1056', '1057', '1058', '1059']
 vars_sail = ['UWND_MEAN', 'VWND_MEAN', 'GUST_WND_MEAN', 'TEMP_AIR_MEAN', \
@@ -70,45 +71,51 @@ for m in range(len(models)):
     modpts_sail = {}
     modpts_sb   = {}    
 
-    #-----------------------------------------------------------------------
-    # Determine which dates to plot.
-    #-----------------------------------------------------------------------
-    sdt = time_increment(dt_utc, -days_back, dtfmt)
-    dts = get_dates(sdt, dt_utc, 60, dtfmt)
-    dts_plot = get_diffs_plot_dates(dts, plot_dir_c, saildrone_data, \
-                                    model_data, model, stns_sail)
-#    dts_plot = ['2019102900']    
-    
-    if len(dts_plot) == 0:
-        print 'No dates need plotting'
+    for f in range(len(fhrs)):
+        fhr = fhrs[f]
 
-    #-----------------------------------------------------------------------
-    # Make plots for each dts_plot.
-    #-----------------------------------------------------------------------
-    for d in range(len(dts_plot)):
-        dt_plot = dts_plot[d]
-        print 'Making plot for date ', dt_plot
+        #------------------------------------------------------------------
+        # Determine which dates to plot.
+        #------------------------------------------------------------------
+        sdt = time_increment(dt_utc, -days_back, dtfmt)
+        dts = get_dates(sdt, dt_utc, 60, dtfmt)
+        dts_plot = get_diffs_plot_dates(dts, plot_dir_c, saildrone_data, \
+                                        model_data, model, stns_sail)
+        print dts_plot
+        sys.exit()
+        
+        #dts_plot = ['2019102900']    
+    
+        if len(dts_plot) == 0:
+            print 'No dates need plotting'
+
         #-------------------------------------------------------------------
-        # Load Saildrone netcdf data files.
+        # Make plots for each dts_plot.
         #-------------------------------------------------------------------
-        obspts_sail = {}
-        stns_sail_avail = []
-        for s in range(len(stns_sail)):
-            stn = stns_sail[s]
-            #--- Saildrone file names denote hour of data (i.e.11Z is 
-            #--- 1100-1159), and load_saildrone grabs the last 5-min of
-            #--- the hour so for our dt_plot, we need to use PREVIOUS
-            #--- hour's Saildrone file.
-            dt_plot_m1 = time_increment(dt_plot, -1.0/24.0, dtfmt)
-            file_c = saildrone_data + '/' + dt_plot_m1[0:8] + '/sd.' + stn + \
-                     '.' + dt_plot_m1 + '.nc'
-            print 'loading ', file_c
-            if not os.path.isfile(file_c):
-                print 'cannot see ', file_c
-                obspts_sail[stn] = np.nan
-            else:
-                obspts_sail[stn] = load_saildrone(file_c, vars_sail)
-                stns_sail_avail.append(stn)
+        for d in range(len(dts_plot)):
+            dt_plot = dts_plot[d]
+            print 'Making plot for date ', dt_plot
+            #---------------------------------------------------------------
+            # Load Saildrone netcdf data files.
+            #---------------------------------------------------------------
+            obspts_sail = {}
+            stns_sail_avail = []
+            for s in range(len(stns_sail)):
+                stn = stns_sail[s]
+                #--- Saildrone file names denote hour of data (i.e.11Z is 
+                #--- 1100-1159), and load_saildrone grabs the last 5-min of
+                #--- the hour so for our dt_plot, we need to use PREVIOUS
+                #--- hour's Saildrone file.
+                dt_plot_m1 = time_increment(dt_plot, -1.0/24.0, dtfmt)
+                file_c = saildrone_data + '/' + dt_plot_m1[0:8] + '/sd.' + \
+                         stn + '.' + dt_plot_m1 + '.nc'
+                print 'loading ', file_c
+                if not os.path.isfile(file_c):
+                    print 'cannot see ', file_c
+                    obspts_sail[stn] = np.nan
+                else:
+                    obspts_sail[stn] = load_saildrone(file_c, vars_sail)
+                    stns_sail_avail.append(stn)
 
         #-------------------------------------------------------------------
         # Read in ship and buoy obs from QC rawins files.
