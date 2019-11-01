@@ -81,20 +81,22 @@ for m in range(len(models)):
         dts = get_dates(sdt, dt_utc, 60, dtfmt)
         dts_plot = get_diffs_plot_dates(dts, plot_dir_c, saildrone_data, \
                                         model_data, model, stns_sail)
-        print dts_plot
-        sys.exit()
-        
         #dts_plot = ['2019102900']    
     
-        if len(dts_plot) == 0:
-            print 'No dates need plotting'
-
         #-------------------------------------------------------------------
         # Make plots for each dts_plot.
         #-------------------------------------------------------------------
         for d in range(len(dts_plot)):
             dt_plot = dts_plot[d]
-            print 'Making plot for date ', dt_plot
+
+            plotfname = get_plotfname_diffs(plot_dir_c, dt_plot, model, fhr)
+
+            if not os.path.isfile(plotfname):
+                print 'Making plot for date ', dt_plot
+            else:
+                continue
+            sys.exit()
+            
             #---------------------------------------------------------------
             # Load Saildrone netcdf data files.
             #---------------------------------------------------------------

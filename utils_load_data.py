@@ -102,8 +102,8 @@ def get_plotfname(dirin, dtin):
 #---------------------------------------------------------------------------
 # Get diffs plot file name.
 #---------------------------------------------------------------------------
-def get_plotfname_diffs(dirin, dtin, model):
-    plotfname = dirin + '/' + model + '_' + dtin + '.png'
+def get_plotfname_diffs(dirin, dtin, model, fhr):
+    plotfname = dirin + '/' + model + '_' + dtin + '_f' + fhr + '.png'
     return plotfname
 
 #---------------------------------------------------------------------------
