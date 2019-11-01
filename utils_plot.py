@@ -176,7 +176,7 @@ def mapper(stns_sail, dat_sail, stns_sb, typ_sb, dat_sb, titlein, plotfname):
         spd = dat_sb[stn,'spd'] * ms2knots
         wdir = dat_sb[stn,'wdir']
         u, v = dirspd_to_uv(wdir, spd)
-        pres = dat_sb[stn,'slp']
+        pres = dat_sb[stn,'slp'] / 100.0
         if np.isnan(t) and np.isnan(td) and np.isnan(u) and np.isnan(pres):
             continue
 

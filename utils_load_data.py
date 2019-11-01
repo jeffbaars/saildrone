@@ -135,37 +135,37 @@ def get_plot_dates(dts, plot_dir, sd_dir, sdnames):
     dts_plot = sorted(set(dts_plot), reverse=True)
     return dts_plot
 
+##---------------------------------------------------------------------------
+## Get dates for which to make diffs plots.
+##---------------------------------------------------------------------------
+#def get_diffs_plot_dates(dts, plot_dir, sd_dir, model_data, model, sdnames):
+#    dts_plot = []
+#    model_files = glob.glob(model_data + '/' + model + '/data/*')
+#    for f in range(len(model_files)):
+#        dt_c = re.findall(r'(\d{10})', model_files[f])[0]
+#        pf = get_plotfname_diffs(plot_dir, dt_c, model, fhr)
+#        if not os.path.isfile(pf):
+#            found_one = 0
+#            for s in range(len(sdnames)):
+#                sd = get_saildrone_fname(sd_dir, dt_c, sdnames[s])
+#                if os.path.isfile(sd):
+#                    found_one = 1
+#            if found_one == 1:
+#                dts_plot.append(dt_c)
+#    dts_plot = sorted(set(dts_plot), reverse=True)
+#
+#    return dts_plot
+
 #---------------------------------------------------------------------------
 # Get dates for which to make diffs plots.
 #---------------------------------------------------------------------------
-def get_diffs_plot_dates(dts, plot_dir, sd_dir, model_data, model, sdnames):
+def get_diffs_plot_dates(dts, fhr, plot_dir, sd_dir, model_data, \
+                         model, sdnames):
     dts_plot = []
     model_files = glob.glob(model_data + '/' + model + '/data/*')
     for f in range(len(model_files)):
         dt_c = re.findall(r'(\d{10})', model_files[f])[0]
-        pf = get_plotfname_diffs(plot_dir, dt_c, model)
-        if not os.path.isfile(pf):
-            found_one = 0
-            for s in range(len(sdnames)):
-                sd = get_saildrone_fname(sd_dir, dt_c, sdnames[s])
-                if os.path.isfile(sd):
-                    found_one = 1
-            if found_one == 1:
-                dts_plot.append(dt_c)
-    dts_plot = sorted(set(dts_plot), reverse=True)
-
-    return dts_plot
-
-#---------------------------------------------------------------------------
-# Get dates for which to make diffs plots.
-#---------------------------------------------------------------------------
-def get_diffs_plot_dates_new(dts, fhr, plot_dir, sd_dir, model_data, \
-                             model, sdnames):
-    dts_plot = []
-    model_files = glob.glob(model_data + '/' + model + '/data/*')
-    for f in range(len(model_files)):
-        dt_c = re.findall(r'(\d{10})', model_files[f])[0]
-        pf = get_plotfname_diffs(plot_dir, dt_c, model)
+        pf = get_plotfname_diffs(plot_dir, dt_c, model, fhr)
         if not os.path.isfile(pf):
             found_one = 0
             for s in range(len(sdnames)):
