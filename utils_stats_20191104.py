@@ -141,8 +141,6 @@ def bilinear_interpolate(latgrid, longrid, datagrid, latpt, lonpt, deb):
     (i,j) = np.unravel_index(totdiff.argmin(), totdiff.shape)
 
     #--- Get lat/lon box in which latpt,lonpt resides.
-    iif = np.nan
-    jjf = np.nan    
     if (latpt >= latgrid[i,j] and lonpt >= longrid[i,j]):
         iif = i
         jjf = j
@@ -164,8 +162,6 @@ def bilinear_interpolate(latgrid, longrid, datagrid, latpt, lonpt, deb):
         print 'latgrid[iif+1,jjf] = ', latgrid[iif+1,jjf]
         print 'latgrid[iif,jjf]   = ', latgrid[iif,jjf]
 
-    if iif != iif or jjf != jjf:
-        return mvc
     if (iif >= (nx-1) or jjf >= (ny-1) or iif < 0 or jjf < 0):
         return mvc
 

@@ -16,6 +16,7 @@ pickle_dir  = sail_dir + '/pickle'
 data_dir    = sail_dir + '/data'
 rundirs_dir = sail_dir + '/rundirs'
 plot_dir    = '/home/disk/funnel/saildrone/images/maps_diffs'
+#plot_dir    = sail_dir + '/plots'
 
 saildrone_data = '/home/disk/jabba/steed/data/raw/saildrone/'
 rawins_data    = '/home/disk/spock2/jbaars/qc_rawins_data'
@@ -28,7 +29,6 @@ models = ['gfsp25']
 domain = 'd01'
 #fhrs   = ['000', '003', '006', '009', '012', '015', '018', '021', '024']
 fhrs   = ['000', '012', '024']
-#fhrs   = ['024']
 
 stns_sail = ['1054', '1055', '1056', '1057', '1058', '1059']
 vars_sail = ['UWND_MEAN', 'VWND_MEAN', 'GUST_WND_MEAN', 'TEMP_AIR_MEAN', \
@@ -48,13 +48,13 @@ days_back = 3
 #---------------------------------------------------------------------------
 # Get current time.
 #---------------------------------------------------------------------------
-dt = get_now(dtfmt)
-dt_utc = local_to_gmt(dt, dtfmt)
+now = get_now(dtfmt)
+now_utc = local_to_gmt(now, dtfmt)
 
 #---------------------------------------------------------------------------
 # Make run directory.
 #---------------------------------------------------------------------------
-rundir = rundirs_dir + '/map_saildrone_diffs_' + dt_utc + '.' + str(os.getpid())
+rundir = rundirs_dir + '/map_saildrone_diffs_' + now_utc + '.'+str(os.getpid())
 print 'making ', rundir
 os.makedirs(rundir)
 
@@ -77,11 +77,12 @@ for m in range(len(models)):
         #------------------------------------------------------------------
         # Determine which dates to plot.
         #------------------------------------------------------------------
-        sdt = time_increment(dt_utc, -days_back, dtfmt)
-        dts = get_dates(sdt, dt_utc, 60, dtfmt)
-        dts_plot = get_diffs_plot_dates(dts, fhr, plot_dir_c, saildrone_data, \
-                                        model_data, model, stns_sail)
-        #dts_plot = ['2019102900']    
+        sdt = time_increment(now_utc, -days_back, dtfmt)
+        dts = get_dates(sdt, now_utc, 60, dtfmt)
+        dts_plot = get_diffs_plot_dates(dts, fhr, plot_dir_c, \
+                                        saildrone_data, model_data, model, \
+                                        stns_sail)
+#        dts_plot = ['2019110600']    
     
         #-------------------------------------------------------------------
         # Make plots for each dts_plot.
@@ -89,6 +90,12 @@ for m in range(len(models)):
         for d in range(len(dts_plot)):
             dt_plot = dts_plot[d]
             vdt = time_increment(dt_plot, float(fhr) / 24.0, dtfmt)
+            if vdt > now_utc:
+                print 'verif date, ', vdt, ', is in the future'
+                continue
+            if vdt < sdt:
+                print 'verif date, ', vdt, ', is too old'
+                continue
 
             plotfname = get_plotfname_diffs(plot_dir_c, dt_plot, model, fhr)
 
@@ -109,7 +116,7 @@ for m in range(len(models)):
                 #--- 1100-1159), and load_saildrone grabs the last 5-min of
                 #--- the hour so for our dt_plot, we need to use PREVIOUS
                 #--- hour's Saildrone file.
-                vdt_m1 = time_increment(dt_plot, -1.0/24.0, dtfmt)
+                vdt_m1 = time_increment(vdt, -1.0/24.0, dtfmt)
                 file_c = saildrone_data + '/' + vdt_m1[0:8] + '/sd.' + \
                          stn + '.' + vdt_m1 + '.nc'
                 print 'loading ', file_c
@@ -123,7 +130,7 @@ for m in range(len(models)):
             #-------------------------------------------------------------------
             # Read in ship and buoy obs from QC rawins files.
             #-------------------------------------------------------------------
-            rawins_file = rawins_data + '/' + dt_plot[0:6] + '/obs.' + dt_plot
+            rawins_file = rawins_data + '/' + vdt[0:6] + '/obs.' + vdt
             #rawins_file = 'junk'
             if os.path.isfile(rawins_file):
                 print 'Reading ', rawins_file

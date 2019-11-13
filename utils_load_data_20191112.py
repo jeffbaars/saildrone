@@ -184,13 +184,8 @@ def get_diffs_plot_dates(dts, fhr, plot_dir, sd_dir, model_data, \
 def relh_to_td(tc, rh):
     a1 = 17.625
     b1 = 243.04
-    if np.isnan(tc) or np.isnan(rh):
-        relh_to_td = np.nan
-    elif ~isinstance(tc, float) or ~isinstance(rh, float):
-        relh_to_td = np.nan        
-    else:
-        relh_to_td = (b1 * ( np.log(rh / 100.0) + ((a1 * tc) / (b1 + tc)) )) / \
-                     ( a1 - (np.log(rh / 100.0)) - ((a1 * tc) / (b1 + tc)) )
+    relh_to_td = (b1 * ( np.log(rh / 100.0) + ((a1 * tc) / (b1 + tc)) )) / \
+                 ( a1 - (np.log(rh / 100.0)) - ((a1 * tc) / (b1 + tc)) )
     return relh_to_td
 
 #---------------------------------------------------------------------------
