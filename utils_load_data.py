@@ -228,8 +228,9 @@ def load_saildrone(sdfile, vars):
         else:
             dataout[var] = np.mean(dat_tmp[-avg_mins:])
 
-    td = relh_to_td(dataout['TEMP_AIR_MEAN'], dataout['RH_MEAN'])
-    dataout['TD_MEAN'] = td
+    if 'TEMP_AIR_MEAN' in vars and 'RH_MEAN' in vars:
+        td = relh_to_td(dataout['TEMP_AIR_MEAN'], dataout['RH_MEAN'])
+        dataout['TD_MEAN'] = td
     
     nc.close()
     return dataout

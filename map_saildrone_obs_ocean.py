@@ -30,8 +30,7 @@ domain = 'd01'
 hh     = '00'
 
 stns_sail = ['1054', '1055', '1056', '1057', '1058', '1059']
-vars_sail = ['UWND_MEAN', 'VWND_MEAN', 'GUST_WND_MEAN', 'TEMP_AIR_MEAN', \
-           'RH_MEAN', 'BARO_PRES_MEAN', 'TEMP_O2_RBR_MEAN']
+vars_sail = ['WAVE_DOMINANT_PERIOD', 'WAVE_SIGNIFICANT_HEIGHT']
 
 dtfmt = '%Y%m%d%H'
 days_back = 3
