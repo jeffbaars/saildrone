@@ -41,20 +41,20 @@ ll_lat =   27.0
 ll_lon = -145.0
 
 var_lab = {
-    'TMP_2maboveground' : '2-m Temperature ($^\circ$F)',
-    'DPT_2maboveground' : '2-m Dew Point Temperature ($^\circ$F)',
-    'PRMSL_meansealevel': 'Sea Level Pressure (mb)',
-    'TMP_surface'       : 'Sea Surface Temperature ($^\circ$F)',
-    'WAVE_DOMINANT_PERIOD': 'Dominant Wave Period (s)',
+    'TMP_2maboveground'      : '2-m Temperature ($^\circ$F)',
+    'DPT_2maboveground'      : '2-m Dew Point Temperature ($^\circ$F)',
+    'PRMSL_meansealevel'     : 'Sea Level Pressure (mb)',
+    'TMP_surface'            : 'Sea Surface Temperature ($^\circ$F)',
+    'WAVE_DOMINANT_PERIOD'   : 'Dominant Wave Period (s)',
     'WAVE_SIGNIFICANT_HEIGHT': 'Significant Wave Height (m)'    
     }
 ylims = {
-    'TMP_2maboveground' : [-5, 5],
-    'DPT_2maboveground' : [-5, 5],    
-    'PRMSL_meansealevel': [-2, 2],
-    'TMP_surface'       : [-3, 3],
-    'WAVE_DOMINANT_PERIOD': [0,25],
-    'WAVE_SIGNIFICANT_HEIGHT': [0,8]
+    'TMP_2maboveground'      : [-5, 5],
+    'DPT_2maboveground'      : [-5, 5],    
+    'PRMSL_meansealevel'     : [-2, 2],
+    'TMP_surface'            : [-3, 3],
+    'WAVE_DOMINANT_PERIOD'   : [0, 25],
+    'WAVE_SIGNIFICANT_HEIGHT': [0, 8]
     }
 
 #---------------------------------------------------------------------------
@@ -117,22 +117,29 @@ def ts_diffs(var, dts, stns_sail, obspts_sail, diffs_sail, modpts_sail, \
 #---------------------------------------------------------------------------
 def ts_obs_ocean(var, dts, stns_sail, obspts_sail, cols, titlein, plotfname):
 
+    xtick_hh_modulus = 6  # put a xtick and label every xtick_hh_modulus hours.
     fig, ax = plt.subplots( figsize=(7,5) )
-
+    xlabs_c  = []
+    xticks_c = []
     for s in range(len(stns_sail)):
         stn = stns_sail[s]
-        xlabs = []
         obs_c = []
         for d in range(len(dts)):
             dt = dts[d]
+            hh = dt[8:10]
+            if s == 0:
+                if int(hh) % xtick_hh_modulus == 0:
+                    xticks_c.append(d)
+                    xlabs_c.append(get_nice_date(dt, dtfmt, dtfmt_nice))
             key = (stn,dt)
-            if key in stns_sail:
-                ob_c = obspts_sail[key][var]
-                obs_c.append(ob_c)
+            if key in obspts_sail:
+                if obspts_sail[key] == obspts_sail[key]:
+                    ob_c = obspts_sail[key][var]
+                    obs_c.append(ob_c)
+                else:
+                    obs_c.append(np.nan)                    
             else:
                 obs_c.append(np.nan)
-            print dt, obs_c
-            xlabs.append(get_nice_date(dt, dtfmt, dtfmt_nice))
         plt.plot(obs_c, label = stn, color = cols[s])
 
     #--- y-axis labeling.
@@ -141,8 +148,6 @@ def ts_obs_ocean(var, dts, stns_sail, obspts_sail, cols, titlein, plotfname):
     plt.tick_params(axis='y', which='major', labelsize=fs+1)    
 
     #--- x-axis labels.
-    xticks_c = range(0,len(xlabs))
-    xlabs_c = [ xlabs[i] for i in xticks_c ]    
     plt.xticks(xticks_c)
     plt.tick_params(axis='x', which='major', labelsize=fs-1)
     ax.set_xticklabels(xlabs_c, rotation=90)        

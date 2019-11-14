@@ -30,7 +30,7 @@ stns_sail = ['1054', '1055', '1056', '1057', '1058', '1059']
 vars_sail = ['WAVE_DOMINANT_PERIOD', 'WAVE_SIGNIFICANT_HEIGHT']
 
 dtfmt = '%Y%m%d%H'
-days_back = 1
+days_back = 7
 
 stns_sail_cols = ['indigo', 'blue', 'deepskyblue', \
                   'darkgreen', 'lime', 'orange']
@@ -77,24 +77,27 @@ for d in range(len(dts)):
             obspts_sail[stn,dt] = load_saildrone(file_c, vars_sail)
             stns_sail_avail.append(stn)
 
-stn = '1059'
-dt = '2019111300'
-
-var = 'WAVE_DOMINANT_PERIOD'
-
-for d in range(len(dts)):
-    dt = dts[d]
-    key = (stn,dt)
-    ob_c = obspts_sail[key][var]
-    print dt, ob_c
-sys.exit()
+#stn = '1059'
+#var = 'WAVE_DOMINANT_PERIOD'
+#for d in range(len(dts)):
+#    dt = dts[d]
+#    key = (stn,dt)
+#    if key in obspts_sail:
+#        if obspts_sail[key] == obspts_sail[key]:
+#            test = obspts_sail[key]
+#            print test
+#            if var in obspts_sail[key]:
+#                ob_c = obspts_sail[key][var]
+#                print dt, key, ob_c
+#sys.exit()
 
 #--------------------------------------------------------------
 # Make time series plot.
 #--------------------------------------------------------------
 for vs in range(len(vars_sail)):
     var = vars_sail[vs]
-    titlein = 'UW Saildrone (black), ships (blue), buoys (green)'
+    titlein = var_lab[var] + ', UW Saildrone (black), ships (blue), ' + \
+              'buoys (green)'
     plotfname = plot_dir + '/' + var + '_' + str(days_back) + 'daysback.png'
 #    pf_link = plot_dir + '/' + var + '_latest.png'
     iret = ts_obs_ocean(var, dts, stns_sail, obspts_sail, stns_sail_cols, \
