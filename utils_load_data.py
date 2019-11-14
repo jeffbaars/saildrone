@@ -223,7 +223,9 @@ def load_saildrone(sdfile, vars):
         #--- 5-min of the hour.  So average entire hour, figuring sea-surface
         #--- temperature won't vary greatly in an hour compared to other
         #--- variables.
-        if var == 'TEMP_IR_SEA_WING_UNCOMP_MEAN':
+        if var == 'TEMP_IR_SEA_WING_UNCOMP_MEAN' or \
+           var == 'WAVE_SIGNIFICANT_HEIGHT' or \
+           var == 'WAVE_DOMINANT_PERIOD':
             dataout[var] = np.mean(dat_tmp)
         else:
             dataout[var] = np.mean(dat_tmp[-avg_mins:])

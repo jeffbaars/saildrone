@@ -30,7 +30,7 @@ stns_sail = ['1054', '1055', '1056', '1057', '1058', '1059']
 vars_sail = ['WAVE_DOMINANT_PERIOD', 'WAVE_SIGNIFICANT_HEIGHT']
 
 dtfmt = '%Y%m%d%H'
-days_back = 30
+days_back = 1
 
 stns_sail_cols = ['indigo', 'blue', 'deepskyblue', \
                   'darkgreen', 'lime', 'orange']
@@ -38,9 +38,9 @@ stns_sail_cols = ['indigo', 'blue', 'deepskyblue', \
 #---------------------------------------------------------------------------
 # Get current time and make 
 #---------------------------------------------------------------------------
-dt = get_now(dtfmt)
-dt_utc = local_to_gmt(dt, dtfmt)
-sdt = time_increment(dt_utc[0:8] + '00', -days_back, dtfmt)
+now = get_now(dtfmt)
+now_utc = local_to_gmt(now, dtfmt)
+sdt = time_increment(now_utc[0:8] + '00', -days_back, dtfmt)
         
 #---------------------------------------------------------------------------
 # Make run directory.
@@ -53,12 +53,12 @@ sdt = time_increment(dt_utc[0:8] + '00', -days_back, dtfmt)
 #---------------------------------------------------------------------------
 # Determine which dates to plot.
 #---------------------------------------------------------------------------
-sdt = time_increment(dt_utc, -days_back, dtfmt)
-dts = get_dates(sdt, dt_utc, 60, dtfmt)
+sdt = time_increment(now_utc, -days_back, dtfmt)
+dts = get_dates(sdt, now_utc, 60, dtfmt)
 
 obspts_sail = {}
 for d in range(len(dts)):
-
+    dt = dts[d]
     stns_sail_avail = []
     for s in range(len(stns_sail)):
         stn = stns_sail[s]
@@ -76,24 +76,29 @@ for d in range(len(dts)):
         else:
             obspts_sail[stn,dt] = load_saildrone(file_c, vars_sail)
             stns_sail_avail.append(stn)
-sys.exit()            
+
+stn = '1059'
+dt = '2019111300'
+
+var = 'WAVE_DOMINANT_PERIOD'
+
+for d in range(len(dts)):
+    dt = dts[d]
+    key = (stn,dt)
+    ob_c = obspts_sail[key][var]
+    print dt, ob_c
+sys.exit()
 
 #--------------------------------------------------------------
 # Make time series plot.
 #--------------------------------------------------------------
 for vs in range(len(vars_sail)):
     var = vars_sail[vs]
-    titlein = 'UW Saildrone (black), ships (blue), buoys (green), ' + \
-              dt_nice + ' (' + dt_nice_lst + ')'
-
-    titlein = var_lab[var] + ' ' + model + ' - Saildrone Obs ' + \
-              'Differences, FHR' + fhr
-    plotfname = plot_dir + '/' + model + '_' + var + '_' + \
-                str(days_back) + 'daysback' + '_f' + fhr + '.png'
-    pf_link = plot_dir + '/' + var + '_latest.png'
-    iret = ts_diffs(var, dts_all, stns_sail, obspts_sail, \
-                    diffs_sail, modpts_sail, stns_sail_cols, \
-                    titlein, plotfname)
+    titlein = 'UW Saildrone (black), ships (blue), buoys (green)'
+    plotfname = plot_dir + '/' + var + '_' + str(days_back) + 'daysback.png'
+#    pf_link = plot_dir + '/' + var + '_latest.png'
+    iret = ts_obs_ocean(var, dts, stns_sail, obspts_sail, stns_sail_cols, \
+                        titlein, plotfname)
 #sys.exit()
 
 #

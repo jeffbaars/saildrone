@@ -44,13 +44,17 @@ var_lab = {
     'TMP_2maboveground' : '2-m Temperature ($^\circ$F)',
     'DPT_2maboveground' : '2-m Dew Point Temperature ($^\circ$F)',
     'PRMSL_meansealevel': 'Sea Level Pressure (mb)',
-    'TMP_surface'       : 'Sea Surface Temperature ($^\circ$F)'
+    'TMP_surface'       : 'Sea Surface Temperature ($^\circ$F)',
+    'WAVE_DOMINANT_PERIOD': 'Dominant Wave Period (s)',
+    'WAVE_SIGNIFICANT_HEIGHT': 'Significant Wave Height (m)'    
     }
 ylims = {
     'TMP_2maboveground' : [-5, 5],
     'DPT_2maboveground' : [-5, 5],    
     'PRMSL_meansealevel': [-2, 2],
-    'TMP_surface'       : [-3, 3]    
+    'TMP_surface'       : [-3, 3],
+    'WAVE_DOMINANT_PERIOD': [0,25],
+    'WAVE_SIGNIFICANT_HEIGHT': [0,8]
     }
 
 #---------------------------------------------------------------------------
@@ -106,7 +110,53 @@ def ts_diffs(var, dts, stns_sail, obspts_sail, diffs_sail, modpts_sail, \
     plt.savefig(plotfname)
     plt.close()
 
+    return 1
 
+#---------------------------------------------------------------------------
+# Create model-obs diffs time series plot.
+#---------------------------------------------------------------------------
+def ts_obs_ocean(var, dts, stns_sail, obspts_sail, cols, titlein, plotfname):
+
+    fig, ax = plt.subplots( figsize=(7,5) )
+
+    for s in range(len(stns_sail)):
+        stn = stns_sail[s]
+        xlabs = []
+        obs_c = []
+        for d in range(len(dts)):
+            dt = dts[d]
+            key = (stn,dt)
+            if key in stns_sail:
+                ob_c = obspts_sail[key][var]
+                obs_c.append(ob_c)
+            else:
+                obs_c.append(np.nan)
+            print dt, obs_c
+            xlabs.append(get_nice_date(dt, dtfmt, dtfmt_nice))
+        plt.plot(obs_c, label = stn, color = cols[s])
+
+    #--- y-axis labeling.
+    plt.ylim(ylims[var])
+    plt.ylabel(var_lab[var], fontsize=fs+1)
+    plt.tick_params(axis='y', which='major', labelsize=fs+1)    
+
+    #--- x-axis labels.
+    xticks_c = range(0,len(xlabs))
+    xlabs_c = [ xlabs[i] for i in xticks_c ]    
+    plt.xticks(xticks_c)
+    plt.tick_params(axis='x', which='major', labelsize=fs-1)
+    ax.set_xticklabels(xlabs_c, rotation=90)        
+    plt.xlabel('Date', fontsize=fs+1)
+
+    plt.title(titlein, fontsize=titlefs, fontweight='bold')
+
+    plt.tight_layout()
+    plt.grid()
+    plt.legend(fontsize = fs, loc = 'best')
+
+    print 'xli ', plotfname, ' &'
+    plt.savefig(plotfname)
+    plt.close()
 
     return 1
 
