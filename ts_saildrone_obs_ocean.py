@@ -30,7 +30,7 @@ stns_sail = ['1054', '1055', '1056', '1057', '1058', '1059']
 vars_sail = ['WAVE_DOMINANT_PERIOD', 'WAVE_SIGNIFICANT_HEIGHT']
 
 dtfmt = '%Y%m%d%H'
-days_back = 7
+days_back = 8
 
 stns_sail_cols = ['indigo', 'blue', 'deepskyblue', \
                   'darkgreen', 'lime', 'orange']
@@ -96,8 +96,9 @@ for d in range(len(dts)):
 #--------------------------------------------------------------
 for vs in range(len(vars_sail)):
     var = vars_sail[vs]
-    titlein = var_lab[var] + ', UW Saildrone (black), ships (blue), ' + \
-              'buoys (green)'
+    titlein = 'Saildrone ' + var_lab[var] + ', ' + \
+              get_nice_date(dts[0], dtfmt, dtfmt_nice) + ' - ' + \
+              get_nice_date(dts[len(dts)-1], dtfmt, dtfmt_nice)
     plotfname = plot_dir + '/' + var + '_' + str(days_back) + 'daysback.png'
 #    pf_link = plot_dir + '/' + var + '_latest.png'
     iret = ts_obs_ocean(var, dts, stns_sail, obspts_sail, stns_sail_cols, \
