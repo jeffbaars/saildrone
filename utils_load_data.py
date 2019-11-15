@@ -228,7 +228,18 @@ def load_saildrone(sdfile, vars):
            var == 'WAVE_DOMINANT_PERIOD':
             dataout[var] = np.mean(dat_tmp)
         else:
-            dataout[var] = np.mean(dat_tmp[-avg_mins:])
+            #--- If we're averaging the last avg_mins of the hour, make sure
+            #--- we have at least 1 ob.  If we don't, do an average over the
+            #--- entire hour.
+            dat_avg_mins = dat_tmp[-avg_mins:]
+            count = 0
+            for d in range(len(dat_avg_mins)):
+                if isinstance(dat_avg_mins[d], np.float64):
+                    count += 1
+            if count > 0:
+                dataout[var] = np.mean(dat_avg_mins)
+            else:
+                dataout[var] = np.mean(dat_tmp)
 
     if 'TEMP_AIR_MEAN' in vars and 'RH_MEAN' in vars:
         td = relh_to_td(dataout['TEMP_AIR_MEAN'], dataout['RH_MEAN'])
