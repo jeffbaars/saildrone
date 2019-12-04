@@ -29,7 +29,7 @@ rawins_data    = '/home/disk/spock2/jbaars/qc_rawins_data'
 domain = 'd01'
 hh     = '00'
 
-stns_sail = ['1054', '1055', '1056', '1057', '1058', '1059']
+stns_sail = ['1057', '1058', '1059']
 vars_sail = ['UWND_MEAN', 'VWND_MEAN', 'GUST_WND_MEAN', 'TEMP_AIR_MEAN', \
            'RH_MEAN', 'BARO_PRES_MEAN', 'TEMP_O2_RBR_MEAN']
 
@@ -61,6 +61,8 @@ lat, lon, hgt, clats, clons = load_geo_em(geo_em)
 sdt = time_increment(dt_utc, -days_back, dtfmt)
 dts = get_dates(sdt, dt_utc, 60, dtfmt)
 dts_plot = get_plot_dates(dts, plot_dir, saildrone_data, stns_sail)
+
+#dts_plot = ['2019111800']
 
 if len(dts_plot) == 0:
     print 'No dates need plotting'

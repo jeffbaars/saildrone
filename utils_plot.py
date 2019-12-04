@@ -187,11 +187,12 @@ def mapper(stns_sail, dat_sail, stns_sb, typ_sb, dat_sb, titlein, plotfname):
     map.drawcoastlines(linewidth = maplw)
     map.drawstates(linewidth = maplw)
     map.drawcountries(linewidth = maplw)
-
+    #map.fillcontinents(color='lightgray')
+    
     #--- Draw lat/lon grid lines every 30 degrees.
     map.drawmeridians(np.arange(0, 360, 10), linewidth = maplw)
     map.drawparallels(np.arange(-90, 90, 10), linewidth = maplw)
-
+                   
     #--- Plot Saildrone data.
     for s in range(len(stns_sail)):
         stn = stns_sail[s]
