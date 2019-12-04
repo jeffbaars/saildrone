@@ -29,7 +29,7 @@ rawins_data    = '/home/disk/spock2/jbaars/qc_rawins_data'
 domain = 'd01'
 hh     = '00'
 
-stns_sail = ['1057', '1058', '1059']
+stns_sail = ['1031', '1057', '1058', '1059']
 vars_sail = ['UWND_MEAN', 'VWND_MEAN', 'GUST_WND_MEAN', 'TEMP_AIR_MEAN', \
            'RH_MEAN', 'BARO_PRES_MEAN', 'TEMP_O2_RBR_MEAN']
 

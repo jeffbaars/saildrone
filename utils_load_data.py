@@ -197,6 +197,7 @@ def relh_to_td(tc, rh):
 # Load Saildrone netcdf file.
 #---------------------------------------------------------------------------
 def load_saildrone(sdfile, vars):
+    stn = re.search('sd\.(\d\d\d\d)\.', sdfile).group(1)
 
     #--- We'll average the last avg_mins minutes of data to get our hourlies.
     avg_mins = 5
@@ -214,7 +215,24 @@ def load_saildrone(sdfile, vars):
     dataout['date']  = unix_to_date(dts[-1], '%Y%m%d%H%M')
     for v in range(len(vars)):
         var = vars[v]
-        dat_tmp = nc.variables[var][0,:]
+
+        #--- Kludge to handle "new" Saildrone boats that have a different
+        #--- variable name for SST.
+        if var == 'TEMP_O2_RBR_MEAN' and stn == '1031':
+            try:
+                dat_tmp = nc.variables['TEMP_CTD_TELEDYNE_MEAN'][0,:]
+            except:
+                print 'cannot see variable TEMP_CTD_TELEDYNE_MEAN in ', \
+                      sdfile
+                dataout[var] = np.nan
+                continue
+        else:
+            try:
+                dat_tmp = nc.variables[var][0,:]
+            except:
+                print 'cannot see variable ', var, ' in ', sdfile
+                dataout[var] = np.nan
+                continue
 
         #--- IR observed sea-surface temperature appears to be observed
         #--- from 28-min before
