@@ -34,12 +34,23 @@ def load_geo_em(geo_em):
 #---------------------------------------------------------------------------
 def load_model_data(mfile, vars):
     dataout = {}
-    nc = NetCDFFile(mfile, 'r')
+    try:
+        nc = NetCDFFile(mfile, 'r')
+    except:
+        for v in range(len(vars)):
+            dataout[vars[v]] = np.nan
+        lat2d = np.nan
+        lon2d = np.nan
+        return dataout, lat2d, lon2d
+
     lat = nc.variables['latitude'][:]
     lon = nc.variables['longitude'][:]
     for v in range(len(vars)):
         var = vars[v]
-        dat_tmp = nc.variables[var][0,:,:]
+        try:
+            dat_tmp = nc.variables[var][0,:,:]
+        except:
+            dat_tmp = np.nan
         dataout[var] = np.transpose(dat_tmp)
     nc.close()
 
@@ -186,8 +197,11 @@ def relh_to_td(tc, rh):
     b1 = 243.04
     if np.isnan(tc) or np.isnan(rh):
         relh_to_td = np.nan
-    elif ~isinstance(tc, float) or ~isinstance(rh, float):
-        relh_to_td = np.nan        
+#    elif ~isinstance(tc, float) or ~isinstance(rh, float):
+#        print 'in isinstance'
+#        print 'isinstance(tc,float) = ', ~isinstance(tc,float)
+#        print 'isinstance(rh,float) = ', ~isinstance(rh,float)        
+#        relh_to_td = np.nan        
     else:
         relh_to_td = (b1 * ( np.log(rh / 100.0) + ((a1 * tc) / (b1 + tc)) )) / \
                      ( a1 - (np.log(rh / 100.0)) - ((a1 * tc) / (b1 + tc)) )
@@ -218,7 +232,7 @@ def load_saildrone(sdfile, vars):
 
         #--- Kludge to handle "new" Saildrone boats that have a different
         #--- variable name for SST.
-        if var == 'TEMP_O2_RBR_MEAN' and stn == '1031':
+        if var == 'TEMP_O2_RBR_MEAN' and stn in ['1031','1032','1036','1037']:
             try:
                 dat_tmp = nc.variables['TEMP_CTD_TELEDYNE_MEAN'][0,:]
             except:
@@ -260,7 +274,8 @@ def load_saildrone(sdfile, vars):
                 dataout[var] = np.mean(dat_tmp)
 
     if 'TEMP_AIR_MEAN' in vars and 'RH_MEAN' in vars:
-        td = relh_to_td(dataout['TEMP_AIR_MEAN'], dataout['RH_MEAN'])
+        td = relh_to_td(float(dataout['TEMP_AIR_MEAN']), \
+                        float(dataout['RH_MEAN']))
         dataout['TD_MEAN'] = td
     
     nc.close()

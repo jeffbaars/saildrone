@@ -116,8 +116,13 @@ def get_diffs_ts(stns, dt, dat_obs, dat_model, vars_model, \
             elif sailorsb == 'sb':
                 obs_c = dat_obs[stn,dt,vars_mod_dict[var_mod]]
 
-            modpt_c = bilinear_interpolate(lat_model, lon_model, \
-                                           dat_model[var_mod], lat_c, lon_c, 0)
+            try:
+                modpt_c = bilinear_interpolate(lat_model, lon_model, \
+                                               dat_model[var_mod], \
+                                               lat_c, lon_c, 0)
+            except:
+                modpt_c = np.nan
+                
             if sailorsb == 'sail':
                 if var_mod == 'TMP_2maboveground' or \
                    var_mod == 'DPT_2maboveground' or \

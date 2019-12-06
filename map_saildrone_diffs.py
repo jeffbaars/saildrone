@@ -30,7 +30,7 @@ domain = 'd01'
 #fhrs   = ['000', '003', '006', '009', '012', '015', '018', '021', '024']
 fhrs   = ['000', '012', '024']
 
-stns_sail = ['1031', '1057', '1058', '1059']
+stns_sail = ['1031', '1036', '1037', '1057', '1058', '1059']
 vars_sail = ['UWND_MEAN', 'VWND_MEAN', 'GUST_WND_MEAN', 'TEMP_AIR_MEAN', \
              'RH_MEAN', 'BARO_PRES_MEAN', \
              'TEMP_IR_SEA_WING_UNCOMP_MEAN', 'TEMP_O2_RBR_MEAN', \

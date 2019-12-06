@@ -18,9 +18,10 @@ rundirs_dir = sail_dir + '/rundirs'
 plot_dir    = '/home/disk/funnel/saildrone/images/ts_diffs'
 #plot_dir    = sail_dir + '/plots'
 
-saildrone_data = '/home/disk/jabba/steed/data/raw/saildrone/'
-rawins_data    = '/home/disk/spock2/jbaars/qc_rawins_data'
-model_data     = '/home/disk/tcu/grids'
+saildrone_data  = '/home/disk/jabba/steed/data/raw/saildrone/'
+rawins_data     = '/home/disk/spock2/jbaars/qc_rawins_data'
+model_data      = '/home/disk/tcu/grids'
+model_data_arch = '/home/disk/jabba/steed/data/raw/'
 
 #---------------------------------------------------------------------------
 # Settings.
@@ -28,10 +29,10 @@ model_data     = '/home/disk/tcu/grids'
 models = ['gfsp25']
 domain = 'd01'
 #fhrs   = ['000', '003', '006', '009', '012', '015', '018', '021', '024']
-fhrs   = ['000', '012', '024']
-#fhrs   = ['000']
+#fhrs   = ['000', '012', '024']
+fhrs   = ['024']
 
-stns_sail = ['1054', '1055', '1056', '1057', '1058', '1059']
+stns_sail = ['1031', '1036', '1037', '1057', '1058', '1059']
 vars_sail = ['UWND_MEAN', 'VWND_MEAN', 'GUST_WND_MEAN', 'TEMP_AIR_MEAN', \
              'RH_MEAN', 'BARO_PRES_MEAN', \
              'TEMP_IR_SEA_WING_UNCOMP_MEAN', 'TEMP_O2_RBR_MEAN', \
@@ -99,8 +100,13 @@ for m in range(len(models)):
 #            print 'No plots needed for F', fhr, ', ', model
 #            continue
 
+        #--- Gather and combine model files from both locations.
         model_files = sorted(glob.glob(model_data + '/' + model + '/data/*/' + \
                     model + '.*.' + fhr + '.nc'))
+        model_files_arch = sorted(glob.glob(model_data_arch + '/' + model + \
+                                            '/*/' + model + '.*.' + fhr +'.nc'))
+        model_files = model_files + model_files_arch
+        model_files = sorted(set(model_files))
 
 #        pf = pickle_dir + '/' + model + '_' + sdt + '_' + \
 #             str(days_back) + 'daysback' + '_f' + fhr + '.pkl'
@@ -156,7 +162,8 @@ for m in range(len(models)):
                 #--------------------------------------------------------------
                 # Load model grid, get diffs.
                 #--------------------------------------------------------------
-                grid_model, lat_model, lon_model = load_model_data(model_file, \
+                print 'model_file = ', model_file
+                grid_model, lat_model, lon_model = load_model_data(model_file,\
                                                                    vars_model)
                 diffs_sail, modpts_sail = get_diffs_ts(stns_sail_avail, dt_c, \
                                                        obspts_sail, grid_model,\

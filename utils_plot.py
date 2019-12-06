@@ -93,7 +93,7 @@ def ts_diffs(var, dts, stns_sail, obspts_sail, diffs_sail, modpts_sail, \
     plt.tick_params(axis='y', which='major', labelsize=fs+1)    
 
     #--- x-axis labels.
-    xticks_c = range(0,len(xlabs))
+    xticks_c = range(0,len(xlabs), 4)
     xlabs_c = [ xlabs[i] for i in xticks_c ]    
     plt.xticks(xticks_c)
     plt.tick_params(axis='x', which='major', labelsize=fs-1)
